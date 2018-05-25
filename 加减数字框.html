@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>加减数字框</title>
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<style type="text/css">
+		.div{
+			width: 20px;
+			display: inline-block;
+			margin: 0 10px;
+		}
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/babel">
+		class NumberNode extends React.Component{
+			constructor(){
+				super();
+				this.state = {
+					number:0
+				}
+			}
+			last(){
+				this.setState({
+					number:this.state.number == this.props.min?Number(this.props.min):(this.state.number-1)
+				})
+			}
+			next(){
+				this.setState({
+					number:this.state.number == this.props.max?Number(this.props.max):(this.state.number+1)
+				})
+			}
+			render(){
+				return (<div>
+					<input type='button' value='-' onClick={this.last.bind(this)} />
+					<div className='div'>{this.state.number}</div>
+					<input type='button' value='+' onClick={this.next.bind(this)} />
+				</div>)
+			}
+		}
+		
+		ReactDOM.render(<NumberNode min='0' max='15' />,app)
+	</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>react-demo</title>
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<style type="text/css">
+		.div{
+			width: 200px;
+			height: 200px;
+			background: red;
+		}
+	</style>
+</head>
+<body>
+	<div id="app">
+		
+	</div>
+	<script type="text/babel">
+		class Leo extends React.Component{
+			constructor(){
+				super();
+				this.state = {
+					show:'block'
+				}
+			}
+			render(){
+//				console.log(this)
+				return (<div>
+					<input type="button" value="切换" onClick={this.show.bind(this)} />
+					<div className="div" style={{display:this.state.show}}></div>
+				</div>)
+			}
+			show(){
+				this.setState({
+					show:this.state.show=='block'?'none':'block'
+				})
+			}
+		};
+		ReactDOM.render(<Leo />,app)
+	</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>form表单</title>
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<style type="text/css">
+		
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/babel">
+		class Leo extends React.Component{ 
+			render(){ 
+				return(<div>
+					<input type='text' defaultValue='' /> 
+					<input type='checkbox' defaultChecked /> 
+				</div>);
+			} 
+		}
+		ReactDOM.render(<Leo />,app);
+	</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>交互 jquery</title>
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<script src="js/zepto.min.js"></script>
+	<style type="text/css">
+		
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/babel">
+		class Leo extends React.Component{ 
+			constructor(){
+				super();
+				this.state={
+					arr:[]
+				}
+			}
+			// 挂载前开始获取数据
+			componentWillMount(){
+				this.ajaxToData();
+			}
+			//jQuery
+			ajaxToData(){
+				$.ajax({
+					url:"http://localhost:2839/get",
+					success:function(data){
+						this.setState({
+							arr:data
+						})
+					}.bind(this)
+				})
+			}
+			render(){ 
+				let arrLi = [];
+				this.state.arr.forEach((val,index)=>{
+					arrLi.push(<li key={index}>{val}</li>)
+				});
+				return(<div>
+					<div style={{display:this.state.arr.length>0?'none':'block'}}>暂时没有数据</div>
+					<ul>
+						{arrLi}
+					</ul>
+				</div>);
+			} 
+		}
+		ReactDOM.render(<Leo />,app);
+	</script>
+</body>
+</html>

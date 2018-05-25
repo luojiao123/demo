@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>react-demo</title>
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/babel">
+		class InputChange extends React.Component{
+			constructor(){
+				super();
+				this.state={
+					msg:''
+				}
+			}
+			change(e){
+//				console.log(this.refs)
+				this.setState({
+					msg:this.refs.leo.value
+				})
+			}
+			render(){
+				return(<div>
+					<input type='text' onInput={this.change.bind(this)} ref='leo' />
+					<div>{this.state.msg}</div>
+				</div>)
+			}
+		}
+		
+		ReactDOM.render(<InputChange />,app);
+	</script>
+</body>
+</html>

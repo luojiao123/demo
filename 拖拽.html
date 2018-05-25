@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>拖拽</title>
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.div1{
+			width: 200px;
+			height: 200px;
+			background: red;
+			position: absolute;
+		}
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/babel">
+		class Drag extends React.Component{
+			constructor(){
+				super();
+				this.state={
+					needX:0,
+					needY:0
+				}
+				this.disX = 0;
+				this.disY = 0;
+			}
+			fnDown(e){
+				// 获取当前元素   鼠标按下时位置
+				this.disX = e.clientX - e.target.offsetLeft;
+				this.disY = e.clientY - e.target.offsetTop;
+				
+				document.onmousemove = this.fnMove.bind(this);
+				document.onmouseup = this.fnUp.bind(this);
+//				console.log(this.disX,this.disY)
+			}
+			fnMove(e){
+				this.setState({
+					needX:e.clientX - this.disX,					
+					needY:e.clientY - this.disY
+				})
+			}
+			fnUp(){
+				document.onmousemove = null;
+				document.onmouseup = null;
+			}
+			render(){
+				return(<div>
+					<div className='div1' style={{left:this.state.needX,top:this.state.needY}} onMouseDown={this.fnDown.bind(this)}></div>
+				</div>)
+			}
+		}
+		
+		ReactDOM.render(<Drag />,app);
+	</script>
+</body>
+</html>

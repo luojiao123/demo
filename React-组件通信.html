@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>React-组件通信</title>
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<style type="text/css">
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/babel">
+		
+		class Child extends React.Component{
+			render(){
+				return <div>我是子组件 => {this.props.setMsg}</div>
+			}
+		}
+		
+		class Parent extends React.Component{
+			constructor(){
+				super();
+				this.state={
+					msg:' 我是父组件的数据'
+				}
+			}
+			show(){
+				// 当点击父组件的时候，父组件子组件的数据都会发生改变
+				this.setState({
+					msg:'我改变了'
+				})
+			}
+			render(){
+				
+				return (<div>
+					<div onClick={this.show.bind(this)}>我是父组件 => {this.state.msg}</div>
+					<br />
+					<Child setMsg={this.state.msg} />
+				</div>)
+			}
+		}
+		
+		ReactDOM.render(<Parent />,app);
+	</script>
+</body>
+</html>

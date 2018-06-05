@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>React-组件通信</title>
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<style type="text/css">
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/babel">
+		class Show extends React.Component{
+			constructor(){
+				super();
+				this.state={
+					msg:''
+				}
+			}
+			componentWillMount(){
+				this.thisShow();
+			}
+			// 数据更新之后
+			componentDidUpdate(){
+				console.log(this.state.msg)
+				this.thisShow();
+			}
+			thisShow(){
+				if(Number(this.props.v)<Number(this.props.min)){
+					this.setState={
+						msg:'水结冰了'
+					}
+				}else if(Number(this.props.v)>Number(this.props.max)){
+					this.setState={
+						msg:'水烧开了'
+					}
+				}else{
+					this.setState={
+						msg:'正在加热中......'
+					}
+				}
+			}
+			render(){
+				return(<div>{this.setState.msg}</div>)
+			}
+		}
+	
+		class Water extends React.Component{
+			constructor(){
+				super();
+				this.state={
+					wd:20
+				}
+			}
+			change(e){
+				this.setState({
+					wd:e.target.value
+				})
+//				console.log(e.target.value)
+			}
+			render(){
+				return(<div>
+					<input type='number' onChange={this.change.bind(this)} defaultValue={this.state.wd} />
+					<Show v={this.state.wd} min={this.props.min} max={this.props.max} />
+				</div>)
+			}
+		}
+		
+		ReactDOM.render(<Water min='10' max='99' />,app);
+	</script>
+</body>
+</html>

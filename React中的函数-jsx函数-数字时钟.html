@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>React中的函数</title>
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<style type="text/css">
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/babel">
+		function clock(){
+			let c = <span>{new Date().toLocaleDateString() + '' + new Date().toLocaleTimeString()}</span>
+			ReactDOM.render(c,app);
+		}
+		clock();
+		setInterval(clock,1000)
+	</script>
+</body>
+</html>

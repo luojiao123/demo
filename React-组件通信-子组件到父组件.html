@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>React-组件通信</title>
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<style type="text/css">
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/babel">
+		
+		class Child extends React.Component{
+			constructor(){
+				super();
+				this.state={
+					msg:'我是子组件的数据'
+				}
+			}
+			componentWillMount(){
+				// 执行父组件的show方法
+				this.props.getMsg(this.state.msg)
+			}
+			render(){
+				return <div>我是子组件 => {this.state.msg}</div>
+			}
+		}
+		
+		class Parent extends React.Component{
+			constructor(){
+				super();
+				this.state={
+					msg:' 我是父组件的数据'
+				}
+			}
+			
+			show(v){
+				this.setState({
+					msg:v
+				})
+			}
+			render(){
+				return (<div>
+					<div >我是父组件 => {this.state.msg} </div>
+					<br />
+					<Child getMsg={this.show.bind(this)} />
+				</div>)
+			}
+		}
+		
+		ReactDOM.render(<Parent />,app);
+	</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>React中的函数</title>
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<style type="text/css">
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/babel">
+		function c(){
+			return <span>我是函数c</span>
+		}
+		
+		class Leo extends React.component{
+			render(){
+				return(<div>
+					<span>我是组件Leo</span>
+				</div>)
+			}
+		}
+		
+		function a(v){ 
+			if(v>3){
+				return <span>{c()}</span>
+			}else{
+				return <Leo />
+			}
+		}
+		let b = <div>{a(2)}</div>
+		
+		ReactDOM.render(b,app)
+	</script>
+</body>
+</html>

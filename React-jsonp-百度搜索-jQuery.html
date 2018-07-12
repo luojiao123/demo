@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<title>React选项卡原理及json使用</title>
+	<style type="text/css">
+		.myDiv{
+			width: 200px;
+			height: 200px;
+			border: 1px solid #ccc;
+			
+		}
+		input.active{
+		    background: red;
+		    border: 2px solid red;
+		}
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	<script src="js/jquery.min.js"></script>
+	<script type="text/babel">
+		class Search extends React.Component{
+			constructor(){
+				super();
+				this.state={
+					arr:[]
+				}
+			}
+			change(e){
+				console.log(e.target.value)
+				let os = document.createElement('script');
+				os.src = ''
+				document.head.appendChild(os);
+				os.remove();
+				$.ajax({
+					url:'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd='+e.target.value,
+					type:'GET',
+					jsonp:'cb',
+					dataType:'jsonp',
+					success:function(data){
+						console.log(data.s)
+						let ali = [];
+						data.s.forEach((val,index)=>{
+							ali.push(<li key={index}><a href={"https://www.baidu.com/s?wd="+val}>{val}</a></li>);
+						})
+						this.setState({
+							arr:ali
+						})
+					}.bind(this)
+				})
+			}
+			render(){
+				return(<div>
+					<input type='text' onChange={this.change.bind(this)} />
+					<ul id="ul">
+					{this.state.arr}
+					</ul>
+				</div>)
+			}
+		}
+		
+		ReactDOM.render(<Search />,app)
+	</script>
+</body>
+</html>

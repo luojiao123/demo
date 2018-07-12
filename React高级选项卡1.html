@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<title>React高级选项卡1</title>
+	<style type="text/css">
+		
+	</style>
+</head>
+<body>
+	<div id="app">
+		
+	</div>
+	<script type="text/babel">
+		class TopNode extends React.Component{
+			render(){
+				return (<div>
+					我是上面的组件
+				</div>)
+			}
+		}
+		
+		class CenterNode extends React.Component{
+			render(){
+				return (<div>
+					我是中间的组件
+				</div>)
+			}
+		}
+		
+		class BottomNode extends React.Component{
+			render(){
+				return (<div>
+					我是下面的组件
+				</div>)
+			}
+		}
+		class MyTab extends React.Component{
+			render(){
+				return (<div>
+					<TopNode />
+					<CenterNode />
+					<BottomNode />
+				</div>)
+			}
+		}
+		
+		ReactDOM.render(<MyTab />,app);
+	</script>
+</body>
+</html>

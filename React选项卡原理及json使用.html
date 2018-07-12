@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<title>React选项卡原理及json使用</title>
+	<style type="text/css">
+		.myDiv{
+			width: 200px;
+			height: 200px;
+			border: 1px solid #ccc;
+			
+		}
+		input.active{
+			background: red;
+		}
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	
+	<script type="text/babel">
+		class TopNode extends React.Component{
+			render(){
+				let inputArr = [];
+				for(var i=0;i<this.props.topValue.length;i++){
+					inputArr.push(<input key={i} type='button' className={i==this.props.myIndex?'active':''} value={this.props.topValue[i]} />)
+				}
+//				console.log(this.props.topValue)
+				return(<div>
+					{inputArr}
+				</div>)
+			}
+		}
+		
+		class BottomNode extends React.Component{
+			render(){
+				let divArr = [];
+				for(var i=0;i<this.props.json.topValue.length;i++){
+					divArr.push(<div className='myDiv' key={i} style={{display:i==this.props.myIndex?'block':'none'}}>{this.props.json.bottomValue[i]}</div>)
+				}
+				return(<div>
+					{divArr}
+				</div>)
+			}
+		}
+		
+		class Tab extends React.Component{
+			constructor(){
+				super();
+				this.state={
+					index:''
+				}
+			}
+			render(){
+				console.log(this.props.tabJson.topValue)
+				return(<div>
+					<TopNode topValue={this.props.tabJson.topValue} myIndex={this.state.index} />
+					<BottomNode json={this.props.tabJson} myIndex={this.state.index} />
+				</div>)
+			}
+		}
+		
+		ReactDOM.render(<Tab tabJson={{'topValue':['中国','瑞士','新西兰'],bottomValue:['很强大，最棒','银行挺不错','环境很不错']}} />,app)
+	</script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<title>React高级选项卡7左右大图动</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		.outBox{
+			width: 400px;
+			overflow: hidden;
+			position: absolute;
+			/* 使组件居中显示 */
+			transform: translate(-50%,-50%);left: 50%;top: 50%;
+			border: 1px solid #CCCCCC;
+		}
+		.topDiv{
+			width: 100%;
+			height: 280px;
+			float: left;
+			position: relative;
+		}
+		.topDiv ul{
+			height: 100%;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+		.topDiv ul li{
+			width: 400px;
+			height: 280px;
+			float: left;
+			background-size: cover;
+			background-position: center center;
+		}
+		.topDiv .leftClick,.topDiv .rightClick {
+		    position: absolute;
+		    z-index: 3;
+		    top: 50%;
+		    transform: translateY(-50%);
+		    width: 30px;
+		    height: 50px;
+		    line-height: 50px;
+		    background-color: #000;
+		    opacity: 0.5;
+		    color: #fff;
+		    text-align: center;
+		    cursor: pointer;
+		}
+		.topDiv .leftClick{
+		    left: 3px;
+		}
+		.topDiv .rightClick {
+		    right: 3px;
+		}
+		.centerBox{
+			width: 100%;
+			height: 20px;
+			line-height: 20px;
+			background: #ccc;
+			float: left;
+			padding-left: 10px;
+		}
+		.centerBox .rightBox span{
+			cursor: pointer;
+		}
+		.centerBox .rightBox{
+			float: right;
+			margin-right: 20px;
+		}
+		
+		.bottomBox{
+			position: relative;
+			width: 100%;
+			height: 120px;
+			float: left;
+		}
+		
+		.bottomBox ul{
+			height: 100%;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+		.bottomBox ul li{
+			width: 90px;
+		    height: 90px;
+		    float: left;
+		    background-size: cover;
+		    background-position: center center;
+		    border: 5px solid #CCCCCC;
+		    margin: 10px 0;
+		}
+		.bottomBox ul li.active{
+		    border-color: #98FB98;
+		}
+	</style>
+</head>
+<body>
+	<div id="app">
+		
+	</div>
+	<script type="text/babel">
+		let Json={
+			Pic:['./images/yy1.jpg','./images/yy2.jpg','./images/yy22.jpg','./images/yy4.jpg','./images/yy5.jpg','./images/yy6.jpg'],
+			text:['图片1','图片2','图片3','图片4','图片5','图片6']
+		}
+		
+		class TopNode extends React.Component{
+			render(){
+				let aLi = [];
+				this.props.PicUrl.forEach((val,index)=>{
+					aLi.push(<li key={index} style={{backgroundImage:'url('+val+')'}}></li>)
+				})
+				return (<div className="topDiv">
+					<div className="leftClick" onClick={this.props.LFn}>左</div>
+					<div className="rightClick" onClick={this.props.RFn}>右</div>
+					<ul style={{width:this.props.PicUrl.length*400+'px',left:this.props.index*-400+'px'}}>
+					{aLi}
+					</ul>
+				</div>)
+			}
+		}
+		
+		class CenterNode extends React.Component{
+			render(){
+				return (<div className="centerBox"> 
+					<span>{this.props.txt[this.props.index]}</span>
+					<div className="rightBox">
+						<span>大</span>
+						<span>小</span>
+					</div>
+				</div>)
+			}
+		}
+		
+		class BottomNode extends React.Component{
+			render(){
+				let aLi = [];
+				// this.props.goFn.bind(val,index) 第一个参数改变this指向、第二个参数才是传过去的值，函数取值第一个参数就是获取的传过去的值
+				this.props.PicUrl2.forEach((val,index)=>{
+					aLi.push(<li onClick={this.props.goFn.bind(val,index)} className={index==this.props.index?'active':''} key={index} style={{backgroundImage:'url('+val+')'}}></li>)
+				})
+				return (<div className="bottomBox">
+					 <ul style={{width:this.props.PicUrl2.length*100+'px'}}>
+					{aLi}
+					</ul>
+				</div>)
+			}
+		}
+		class MyTab extends React.Component{
+			constructor(){
+				super();
+				this.state={
+					index:2
+				};
+			}
+			change(v){
+				console.log(v)
+				// 点击小图对应大图随之显示
+				this.setState({
+					index:v
+				})
+//				alert(v)
+			}
+			leftFn(){
+				let needIndex = this.state.index-1;
+				needIndex == -1 && (needIndex = this.props.JsonTo.Pic.length-1);
+				this.setState({
+					index:needIndex
+				})
+			}
+			rightFn(){
+				let needIndex = this.state.index+1;
+				needIndex == this.props.JsonTo.Pic.length && (needIndex = 0);
+				this.setState({
+					index:needIndex
+				})
+			}
+			render(){
+				console.log()
+				return (<div className="outBox">
+					<TopNode PicUrl={this.props.JsonTo.Pic} index={this.state.index} LFn={this.leftFn.bind(this)} RFn={this.rightFn.bind(this)} />
+					<CenterNode txt={this.props.JsonTo.text} index={this.state.index} />
+					<BottomNode PicUrl2={this.props.JsonTo.Pic} index={this.state.index} goFn={this.change.bind(this)} />
+				</div>)
+			}
+		}
+		
+		ReactDOM.render(<MyTab JsonTo={Json} />,app);
+	</script>
+</body>
+</html>

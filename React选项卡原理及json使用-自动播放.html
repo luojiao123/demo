@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script src="js/react.min.js"></script>
+	<script src="js/react-dom.min.js"></script>
+	<script src="js/browser.min.js"></script>
+	<title>React选项卡原理及json使用</title>
+	<style type="text/css">
+		.myDiv{
+			width: 200px;
+			height: 200px;
+			border: 1px solid #ccc;
+			
+		}
+		input.active{
+		    background: red;
+		    border: 2px solid red;
+		}
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	
+	<script type="text/babel">
+		class TopNode extends React.Component{
+			show(e){
+				this.props.ChildFn(e.target.getAttribute('data-index'));
+			}
+			render(){
+				let inputArr = [];
+				for(var i=0;i<this.props.topValue.length;i++){
+					inputArr.push(<input key={i} type='button' onClick={this.show.bind(this)} className={i==this.props.myIndex?'active':''} value={this.props.topValue[i]} data-index={i} />)
+				}
+//				console.log(this.props.topValue)
+				return(<div>
+					{inputArr}
+				</div>)
+			}
+		}
+		
+		class BottomNode extends React.Component{
+			render(){
+				let divArr = [];
+				for(var i=0;i<this.props.json.topValue.length;i++){
+					divArr.push(<div className='myDiv' key={i} style={{display:i==this.props.myIndex?'block':'none'}}>{this.props.json.bottomValue[i]}</div>)
+				}
+				return(<div>
+					{divArr}
+				</div>)
+			}
+		}
+		
+		class Tab extends React.Component{
+			constructor(){
+				super();
+				this.state={
+					index:'',
+					timer:null
+				}
+			}
+			// 获取TopNode传递过来的值
+			change(v){
+				this.setState({
+					index:v
+				})
+//				alert(this.state.index)
+			}
+			componentDidMount(){
+				clearInterval(this.timer);
+				this.timer = setInterval(()=>{
+					let index = this.state.index;
+					index++;
+					index == this.props.tabJson.topValue.length && (index=0)
+					this.setState({
+						index:index
+					})
+				},this.props.tabJson.timer)
+			}
+			render(){
+//				console.log(this.props.tabJson.topValue)
+				return(<div>
+					<TopNode topValue={this.props.tabJson.topValue} ChildFn={this.change.bind(this)} myIndex={this.state.index} />
+					<BottomNode json={this.props.tabJson} myIndex={this.state.index} />
+				</div>)
+			}
+		}
+		
+		ReactDOM.render(<Tab tabJson={{'topValue':['中国','瑞士','新西兰'],bottomValue:['很强大，最棒','银行挺不错','环境很不错'],timer:1000}} />,app)
+	</script>
+</body>
+</html>

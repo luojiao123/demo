@@ -41,6 +41,14 @@
 			float: left;
 			background-size: cover;
 			background-position: center center;
+			overflow: hidden;
+		}
+		.topDiv ul li img{
+			width: 100%;
+			height: 100%;
+			object-fit:cover; /* 让img填满盒模型  */
+			transform-origin: center center 0px;
+			transition: .3s;
 		}
 		.topDiv .leftClick,.topDiv .rightClick {
 		    position: absolute;
@@ -120,7 +128,8 @@
 			render(){
 				let aLi = [];
 				this.props.PicUrl.forEach((val,index)=>{
-					aLi.push(<li key={index} style={{backgroundImage:'url('+val+')'}}></li>)
+//					aLi.push(<li key={index} style={{backgroundImage:'url('+val+')'}}></li>)
+					aLi.push(<li key={index}><img src={val} style={{transform:'scale('+this.props.iScale+')'}} /></li>)
 				})
 				// onMouseDown={function(e){e.preventDefault()}}阻止默认事件
 				return (<div className="topDiv">
@@ -138,8 +147,8 @@
 				return (<div className="centerBox"> 
 					<span>{this.props.txt[this.props.index]}</span>
 					<div className="rightBox">
-						<span>大</span>
-						<span>小</span>
+						<span onClick={this.props.Big}>大</span>
+						<span onClick={this.props.Small}>小</span>
 					</div>
 				</div>)
 			}
@@ -164,7 +173,8 @@
 			constructor(){
 				super();
 				this.state={
-					index:2
+					index:0,
+					iScale:1
 				};
 			}
 			change(v){
@@ -179,6 +189,7 @@
 				let needIndex = this.state.index-1;
 				needIndex == -1 && (needIndex = this.props.JsonTo.Pic.length-1);
 				this.setState({
+					iScale:1,
 					index:needIndex
 				})
 			}
@@ -186,14 +197,29 @@
 				let needIndex = this.state.index+1;
 				needIndex == this.props.JsonTo.Pic.length && (needIndex = 0);
 				this.setState({
+					iScale:1,
 					index:needIndex
 				})
+			}
+			big(){
+				let maxB = this.state.iScale+0.1;
+				maxB >=2 &&(maxB =2,alert('已经最大了'));
+				this.setState({
+					iScale:maxB
+				});
+			}
+			small(){
+				let minB = this.state.iScale-0.1;
+				minB <=0.4 &&(minB =0.4,alert('已经最小了'));
+				this.setState({
+					iScale:minB
+				});
 			}
 			render(){
 				console.log()
 				return (<div className="outBox">
-					<TopNode PicUrl={this.props.JsonTo.Pic} index={this.state.index} LFn={this.leftFn.bind(this)} RFn={this.rightFn.bind(this)} />
-					<CenterNode txt={this.props.JsonTo.text} index={this.state.index} />
+					<TopNode PicUrl={this.props.JsonTo.Pic} index={this.state.index} LFn={this.leftFn.bind(this)} RFn={this.rightFn.bind(this)} iScale={this.state.iScale} />
+					<CenterNode txt={this.props.JsonTo.text} index={this.state.index} Big={this.big.bind(this)} Small={this.small.bind(this)} />
 					<BottomNode PicUrl2={this.props.JsonTo.Pic} index={this.state.index} goFn={this.change.bind(this)} />
 				</div>)
 			}
